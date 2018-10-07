@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "eleven-pm" {
     name = "11pm"
     description = "Fires at 11pm local time"
-    schedule_expression = "cron(0 22 * * ? *)"
+    schedule_expression = "cron(0 23 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "run_scraper_at_eleven_pm" {
