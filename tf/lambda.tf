@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "scraper_write_dynamodb" {
 # Archive package
 data "archive_file" "scraper" {
   type = "zip"
-  source_dir = "../scripts/project-dir"
+  source_dir = "../scripts/deployment"
   output_path = "output/scraper.zip"
 }
 

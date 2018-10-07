@@ -1,5 +1,5 @@
 .terraform/
 output/
 terraform.*
-project-dir
-!*.py
+deployment
+!scraper.py
