@@ -71,12 +71,38 @@ data "archive_file" "scraper" {
   output_path = "output/scraper.zip"
 }
 
-# The lambda itself
-resource "aws_lambda_function" "scraper_lambda" {
+# Contract lambda
+resource "aws_lambda_function" "scraper_contract" {
   filename = "${data.archive_file.scraper.output_path}"
-  function_name = "scraper"
+  function_name = "scraper_contract"
   role = "${aws_iam_role.scraper_role.arn}"
   handler = "scraper.handler"
   runtime = "python3.6"
   source_code_hash = "${base64sha256(file(data.archive_file.scraper.output_path))}"
+  timeout = 4
+
+  environment {
+    variables = {
+      SCRAPER_TERMS = "machine learning python",
+      SCRAPER_TYPE = "contract"
+    }
+  }
+}
+
+# Permanent lambda
+resource "aws_lambda_function" "scraper_permanent" {
+  filename = "${data.archive_file.scraper.output_path}"
+  function_name = "scraper_permanent"
+  role = "${aws_iam_role.scraper_role.arn}"
+  handler = "scraper.handler"
+  runtime = "python3.6"
+  source_code_hash = "${base64sha256(file(data.archive_file.scraper.output_path))}"
+  timeout = 4
+
+  environment {
+    variables = {
+      SCRAPER_TERMS = "machine learning python",
+      SCRAPER_TYPE = "permanent"
+    }
+  }
 }

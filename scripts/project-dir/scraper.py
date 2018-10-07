@@ -5,18 +5,25 @@ from contextlib import closing
 from datetime import date
 import boto3
 import logging
+import os
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+# This should error if it doesn't exist
+TERMS = os.environ['SCRAPER_TERMS']
+TYPE = os.environ.get('SCRAPER_TYPE', '')
+# We want a trailing slash iff the type isn't empty string
 
-# TODO: Extract all of this out into env variables
-BASE_URL = 'https://www.cwjobs.co.uk/jobs/contract/'
+# snake_case terms for the ID in the DB
+scraper_type = '_'.join(TERMS.split() + [TYPE])
 
-scraper_type = "mlpython"
-terms = 'machine learning python'.split()
+# kebab-case terms for the web scrape
+search_terms = '-'.join(TERMS.split())
 
-URL = '%s%s/in-london?radius=5&postedwithin=1' % (BASE_URL, '-'.join(terms))
+TYPE += '/' if TYPE != '' else ''
+BASE_URL = 'https://www.cwjobs.co.uk/jobs/%s' % TYPE
+URL = '%s%s/in-london?radius=5&postedwithin=1' % (BASE_URL, search_terms)
 
 
 def get_html():
