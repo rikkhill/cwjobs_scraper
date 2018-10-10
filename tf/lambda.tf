@@ -26,14 +26,17 @@ resource "aws_iam_role_policy" "scraper-cloudwatch-log-group" {
 # Logging policy document
 data "aws_iam_policy_document" "cloudwatch-log-group-scraper" {
   statement {
+    effect = "Allow"
+
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
+      "logs:DescribeLogStreams"
     ]
 
     resources = [
-      "arn:aws:logs:::*",
+      "arn:aws:logs:*:*:*",
     ]
   }
 }
